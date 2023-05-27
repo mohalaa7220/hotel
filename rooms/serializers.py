@@ -27,3 +27,18 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = '__all__'
+
+
+# ------------ Booking -----------
+class CreateBooking(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        exclude = ('user', )
+
+    def validate(self, attrs):
+        check_in = attrs.get('check_in')
+        check_out = attrs.get('check_out')
+        if check_out and check_in and check_out <= check_in:
+            raise serializers.ValidationError(
+                'Check-out date must be after check-in date.')
+        return attrs
