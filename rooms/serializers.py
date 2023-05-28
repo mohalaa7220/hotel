@@ -42,3 +42,11 @@ class CreateBooking(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'Check-out date must be after check-in date.')
         return attrs
+
+
+class BookingSerializer(serializers.ModelSerializer):
+    room = RoomSerializer(read_only=True)
+
+    class Meta:
+        model = Booking
+        fields = '__all__'

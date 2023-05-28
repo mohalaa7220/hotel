@@ -47,9 +47,12 @@ class Booking(models.Model):
         User, on_delete=models.CASCADE, related_name='user_booking')
     room = models.ForeignKey(
         Room, on_delete=models.CASCADE, related_name='room_booking')
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return f"Booking {self.id}: {self.check_in} to {self.check_out} ({self.num_rooms} room{'s' if self.num_rooms > 1 else ''}, {self.num_adults} adult{'s' if self.num_adults > 1 else ''}, {self.num_children} child{'ren' if self.num_children > 1 else ''})"
 
     class Meta:
+        ordering = ('created_at',)
         verbose_name_plural = "bookings"
