@@ -56,3 +56,25 @@ class Booking(models.Model):
     class Meta:
         ordering = ('created_at',)
         verbose_name_plural = "bookings"
+
+
+class BookingUser(models.Model):
+    check_in = models.DateField()
+    check_out = models.DateField()
+    num_adults = models.PositiveSmallIntegerField(
+        default=1, validators=[MinValueValidator(1), MaxValueValidator(4)])
+    num_children = models.PositiveSmallIntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(4)])
+    num_rooms = models.PositiveSmallIntegerField(
+        default=1, validators=[MinValueValidator(1), MaxValueValidator(4)])
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_book')
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return f"Booking {self.id}: {self.check_in} to {self.check_out}"
+
+    class Meta:
+        ordering = ('created_at',)
+        verbose_name_plural = "bookings User"

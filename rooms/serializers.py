@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import (Room, Amenity, Booking)
+from .models import (Room, Amenity, Booking, BookingUser)
+from users.serializers import UserSerializer
 
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -8,6 +9,7 @@ class AmenitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# ------------ Create Room ------------
 class AddRoomSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -29,7 +31,7 @@ class RoomSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# ------------ Booking -----------
+# ------------ Booking Room -----------
 class CreateBooking(serializers.ModelSerializer):
     class Meta:
         model = Booking
@@ -49,4 +51,27 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
+        fields = '__all__'
+
+
+# ------- Booking User ----------
+class CreateBookingUser(serializers.ModelSerializer):
+    class Meta:
+        model = BookingUser
+        exclude = ('user', )
+
+    def validate(self, attrs):
+        check_in = attrs.get('check_in')
+        check_out = attrs.get('check_out')
+        if check_out and check_in and check_out <= check_in:
+            raise serializers.ValidationError(
+                'Check-out date must be after check-in date.')
+        return attrs
+
+
+class BookingUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = BookingUser
         fields = '__all__'

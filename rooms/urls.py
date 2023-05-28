@@ -1,7 +1,7 @@
 
 from django.urls import path
 from .views import (RoomView, RoomDetails, AmenityView,
-                    AmenityDetails, BookingView)
+                    AmenityDetails, BookingView, BookingUserView)
 
 urlpatterns = [
     path('', RoomView.as_view(), name='add_room'),
@@ -13,4 +13,5 @@ urlpatterns = [
 
     # ----- Booking ------
     path('booking/', BookingView.as_view(), name='booking'),
+    path('booking_user/', BookingUserView.as_view(), name='booking_user'),
 ]

@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from .serializers import (
-    RoomSerializer, AddRoomSerializer, AmenitySerializer, CreateBooking, BookingSerializer)
-from .models import (Room, Amenity, Booking)
+    RoomSerializer, AddRoomSerializer, AmenitySerializer, CreateBooking, BookingSerializer, BookingUserSerializer, CreateBookingUser)
+from .models import (Room, Amenity, Booking, BookingUser)
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from project.email_send import email_send
@@ -50,6 +50,7 @@ class AmenityDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Amenity.objects.all()
 
 
+# ------------ Booking Room -----------
 class BookingView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = BookingSerializer
@@ -57,6 +58,20 @@ class BookingView(generics.ListCreateAPIView):
 
     def post(self, request):
         serializer = CreateBooking(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=request.user)
+        email_send(request.user.username, request.user.email)
+        return Response({"message": "Booking saved successfully , check your email"}, status=status.HTTP_200_OK)
+
+
+# ------------ Booking Room -----------
+class BookingUserView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = BookingUserSerializer
+    queryset = BookingUser.objects.select_related('user').all()
+
+    def post(self, request):
+        serializer = CreateBookingUser(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
         email_send(request.user.username, request.user.email)
