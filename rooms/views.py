@@ -35,7 +35,7 @@ class RoomDetails(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        return Response({"message": "Room Deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Room Deleted successfully"}, status=status.HTTP_200_OK)
 
 
 #  ------------ (Add , Get Amenity) ------------

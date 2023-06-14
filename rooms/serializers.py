@@ -30,6 +30,11 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         fields = '__all__'
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['type'] = instance.get_type_display()
+        return representation
+
 
 # ------------ Booking Room -----------
 class CreateBooking(serializers.ModelSerializer):

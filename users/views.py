@@ -22,4 +22,4 @@ class LoginView(views.APIView):
                 "token": token.key
             })
         else:
-            return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'message': 'Email Or Password is Invalid'}, status=status.HTTP_400_BAD_REQUEST)

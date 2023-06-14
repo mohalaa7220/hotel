@@ -14,6 +14,7 @@ class Room(models.Model):
     ]
     type = models.CharField(max_length=120, choices=ROOM_TYPES)
     name = models.CharField(max_length=120)
+    description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     square = models.DecimalField(max_digits=6, decimal_places=2)
     amenities = models.ManyToManyField(
